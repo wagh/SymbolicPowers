@@ -1,0 +1,108 @@
+////////////////////////////////////////////////////////////////////
+version="version symbolicPowers.lib 1.0.0 Aug_2019 "; // $Id: 4d39a472a73097b0713bb7bee6d3fb0670a763f3 $
+category="Commutative Algebra";
+info="
+LIBRARY:   symbolicPowers.lib  Tools to compute symbolic powers of an ideal
+
+AUTHOR:    VInay Wagh, e-mail: waghoba@gmail.com
+
+OVERVIEW:
+The purpose of this library is to compute the symbolic powers of an ideal.
+
+The provided procedures and their implementation are followed from [1].
+
+REFERENCES:
+
+[1] Seth Sullivant. Combinatorial symbolic powers. J. Algebra, 319(1):115--142,@*
+2008. 7 
+
+[2] Hailong Dao, Alessandro De Stefani, Elo\'isa Grifo, Craig Huneke$, Luis@*
+N\'u\~nez-Betancourt. Symbolic powers of ideals. 
+@*\tt{https://arxiv.org/pdf/1708.03010}.
+
+
+KEYWORDS: Symbolic Power;
+
+SEE ALSO: primdec_lib
+
+PROCEDURES:
+  ideal_join();  Join of two ideals, as defined in Defm 2.16 in https://arxiv.org/pdf/1708.03010.pdf
+";
+
+LIB "primdec.lib";
+
+proc join( ideal I, ideal J )
+{
+    int i;
+    def br = basering;
+    list l = ringlist( br );
+    int d = nvars(br);
+    list l2;    
+
+    if ( l[1] != 0 ) 
+    {
+        ERROR( "// Not implemented!!!");
+    }
+    
+    for(i=1;i<=d;i++)
+    {
+	l2[i]=var(i);
+        l2[d+i] = "@t("+string(i)+")";
+    }
+    
+    ring kxy = create_ring(0, l2, ordstr(br));
+    ideal imageY, imageZ;
+    for(i=1;i<=d;i++)
+    {
+	imageY[i] = var(d+i);
+	imageZ[i] = var(d+i)-var(i);
+    }
+
+    map phiY = br, imageY;
+    map phiZ = br, imageZ;
+    // ideal Iy = phiY( I );
+    // ideal Jz = phiZ( J );
+    ideal I = phiY(I), phiZ(J);
+    
+    ideal IstarJ = eliminate( I, product(imageY) );
+    setring( br );
+    ideal IstarJ = fetch( kxy, IstarJ );
+    return( IstarJ );
+}
+
+    
+                               
+proc symbolicPowerofPrimeIdeal( ideal p, int n )
+{
+    if ( n < 1 )
+    {
+        ERROR("Negative power not supported");
+    }
+    if ( n == 1 )
+    {
+        return( p );
+    }
+    return(join(p,maxideal(n)));
+}
+
+proc symbolicPowerofIdeal( ideal I, int n )
+{
+    int i;
+    
+    if ( n < 1 )
+    {
+        ERROR("Negative power not supported");
+    }
+    if ( n == 1 )
+    {
+        return( I );
+    }
+    list pr = minAssGTZ(I);
+    list symb_prime;
+    
+    for (i=1;i<=size(pr);i++)
+    {
+        symb_prime[i] = symbolicPowerofPrimeIdeal( pr[i], n );
+    }
+    return( intersect( symb_prime[1..size(symb_prime)] ) );
+}
