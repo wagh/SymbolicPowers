@@ -108,3 +108,14 @@ proc symbolicPowerofIdeal( ideal I, int n )
     }
     return( intersect( symb_prime[1..size(symb_prime)] ) );
 }
+
+// proc isUnmixedIdeal( ideal I )
+// {
+//     int i;
+//     list pr = minAssGTZ( I );
+//     int isUnmixed = 1;          // 1 is true
+//     for (i=1;i<=size(pr);i++)
+//     {
+        
+//     }
+// }
