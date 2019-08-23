@@ -33,7 +33,7 @@ PROCEDURES:
 
 LIB "primdec.lib";
 
-proc join( ideal I, ideal J )
+proc symbolicJoin( ideal I, ideal J )
 {
     int i;
     def br = basering;
@@ -84,7 +84,7 @@ proc symbolicPowerofPrimeIdeal( ideal p, int n )
     {
         return( p );
     }
-    return(join(p,maxideal(n)));
+    return(symbolicJoin(p,maxideal(n)));
 }
 
 proc symbolicPowerofIdeal( ideal I, int n )
