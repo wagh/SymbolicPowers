@@ -57,7 +57,7 @@ proc symbolicJoin( ideal I, ideal J )
     for(i=1;i<=d;i++)
     {
 	imageY[i] = var(d+i);
-	imageZ[i] = var(d+i)-var(i);
+	imageZ[i] = var(i)-var(d+i);
     }
 
     map phiY = br, imageY;
