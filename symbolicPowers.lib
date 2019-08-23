@@ -26,7 +26,9 @@ KEYWORDS: Symbolic Power;
 SEE ALSO: primdec_lib
 
 PROCEDURES:
-  ideal_join();  Join of two ideals, as defined in Defm 2.16 in https://arxiv.org/pdf/1708.03010.pdf
+  symbolicJoin();  Join of two ideals, as defined in Defm 2.16 in https://arxiv.org/pdf/1708.03010.pdf
+  symbolicPowerofPrimeIdeal();  Compute the sybolic power of a prime ideal
+  symbolicPowerofIdeal();  Compute the sybolic power of an arbitrary ideal
 ";
 
 LIB "primdec.lib";
