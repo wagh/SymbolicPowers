@@ -33,6 +33,70 @@ PROCEDURES:
 
 LIB "primdec.lib";
 
+proc isSquareFree( ideal I )
+{
+    int i=0;
+
+    #################
+        ## The for loop can be replaced by
+                                /*
+                            if ( deg(I) == 1 )
+                            {
+                                return( true );
+                            }
+                            else
+                            {
+                                return( false );
+                            }
+                                */
+    #################
+
+    for (i=1;i<=size(I);i++)
+    {
+        if ( deg(I[i]) > 1 )
+        {
+            return( false );
+        }
+    }
+    return(true);
+
+
+}
+
+
+proc symbolicaPowerSquareFreeMonomialIdeal( ideal I, int n )
+{
+    list assP, rad_prim;
+    ideal id_intersect=1;
+    
+    if ( isSquareFree( I ) )
+    {
+        assP = minAssGTZ( I );
+        id_intersect=1;
+        for (int i=1;i<=size(l);i++)
+        {
+            id_intersect = intersect( id_intersect, l[i]^n );
+        }
+    }
+    else
+    {
+        pd = primdecGTZ( I );
+        rad_prim = apply( pd[1..size(pd)][1], radical );
+        id_intersect=1;
+        for (int i=1;i<=size(l);i++)
+        {
+            id_intersect = intersect( id_intersect, l[i]^n );
+        }
+            /////////////a////////////////////////////////////////////////////////////
+            // INCOMPLETE here... 
+            /////////////a////////////////////////////////////////////////////////////
+    }
+
+}
+
+        
+
+
 proc symbolicJoin( ideal I, ideal J )
 {
     int i;
