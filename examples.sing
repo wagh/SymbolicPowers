@@ -1,0 +1,55 @@
+// Load the library (make sure symbolicpowers.lib is in the working directory)
+LIB "primdec.lib";
+LIB "symbolicpowers.lib";
+
+
+
+// Set up a ring
+ring R = 0,(x,y,z),dp;
+
+// Define some ideals
+ideal I1 = x*y, y*z;              // Non-monomial (but can be treated as monomial for testing)
+ideal I2 = x^2, y^3, z^2;         // Monomial ideal
+
+// Symbolic powers
+print("symbolicPower(I1, 2):");
+ideal S1 = symbolicPower(I1, 2);
+S1;
+
+print("symbolicPower(I2, 3):");
+ideal S2 = symbolicPower(I2, 3);
+S2;
+
+print("symbPowerMon(I2, 2):");
+ideal S3 = symbPowerMon(I2, 2);
+S3;
+
+// Fast power
+print("fastPower(I1, 2):");
+ideal F1 = fastPower(I1, 2);
+F1;
+
+// minimalPart
+print("minimalPart(I1):");
+ideal M1 = minimalPart(I1);
+M1;
+
+// Associated primes heights
+print("assPrimesHeight(I2):");
+intvec H1 = assPrimesHeight(I2);
+H1;
+
+// Big height
+print("bigHeight(I1):");
+int BH = bigHeight(I1);
+BH;
+
+// Minimum degree in symbolic power
+print("minDegreeSymbPower(I2, 2):");
+int minDeg = minDegreeSymbPower(I2, 2);
+minDeg;
+
+// Check if ideal is monomial
+print("isMonomialIdeal(I2):");
+int mono = isMonomialIdeal(I2);
+mono;
