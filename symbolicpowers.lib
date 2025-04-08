@@ -1,0 +1,116 @@
+// Computes symbolic power of an ideal by intersecting powers of minimal primes
+proc symbolicPower(ideal I, int n)
+{
+  list L = primdecGTZ(I);
+  ideal p;
+  ideal symb = ideal(1);  // Correct initialization of ideal
+  for (int i = 1; i <= size(L); i++)
+  {
+    p = L[i][1];
+    symb = intersect(symb, p^n);
+  }
+  return(symb);  // Correct return syntax
+}
+
+// Computes symbolic power for monomial ideals only
+proc symbPowerMon(ideal I, int n)
+{
+  ideal symb = ideal(1);  // Correct initialization of ideal
+  list L = primdecGTZ(I);
+  for (int i = 1; i <= size(L); i++)
+  {
+    ideal p = L[i][1];
+    if (isMonomialIdeal(p))
+    {
+      symb = intersect(symb, p^n);
+    }
+  }
+  return(symb);  // Correct return syntax
+}
+
+// Efficient powering of ideals (native in Singular)
+proc fastPower(ideal I, int n)
+{
+  return(I^n);  // Native Singular operation
+}
+
+// Returns the intersection of minimal primary components
+proc minimalPart(ideal I)
+{
+  list L = primdecGTZ(I);
+  ideal minPart = ideal(1);  // Correct initialization of ideal
+  for (int i = 1; i <= size(L); i++)
+  {
+    if (L[i][2] == 1)  // minimal component
+    {
+      minPart = intersect(minPart, L[i][1]);
+    }
+  }
+  return(minPart);  // Correct return syntax
+}
+
+// Heights of associated primes
+proc assPrimesHeight(ideal I)
+{
+  list L = minAssGTZ(I);
+  intvec heights;
+  for (int i = 1; i <= size(L); i++)
+  {
+    heights[i] = nvars(basering) - dim(L[i]);
+  }
+  return(heights);  // Correct return syntax
+}
+
+// Maximum height of associated primes
+proc bigHeight(ideal I)
+{
+  int maxH = 0;
+  int h;
+  list L = minAssGTZ(I);
+  for (int i = 1; i <= size(L); i++)
+  {
+    h = nvars(basering) - dim(std(L[i]));
+    if (h > maxH)
+    {
+      maxH = h;
+    }
+  }
+  return(maxH);  // Correct return syntax
+}
+
+// Minimum degree of generators in symbolic power
+proc minDegreeSymbPower(ideal I, int n)
+{
+  ideal symb = symbolicPower(I, n);
+  int minDeg = 100000;
+  int d;
+  
+  for (int i = 1; i <= size(symb); i++)
+  {
+    d = deg(lead(symb[i]));
+    if (d < minDeg)
+    {
+      minDeg = d;
+    }
+  }
+  return(minDeg);  // Correct return syntax
+}
+
+// Check if a polynomial is a monomial
+proc isMonomial(poly f)
+{
+  return(deg(lead(f)) == deg(f));  // If the degree of the lead term equals the total degree of the polynomial, it is a monomial
+}
+
+// Check if an ideal is monomial
+proc isMonomialIdeal(ideal I)
+{
+  for (int i = 1; i <= size(I); i++)
+  {
+    if (!isMonomial(I[i]))
+    {
+      return(0);  // Correct return syntax
+    }
+  }
+  return(1);  // Correct return syntax
+}
